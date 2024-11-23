@@ -2,7 +2,73 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+$typography-map: (
+    "display-large": ("line-height": 64px,
+        "size": 57px,
+        "tracking": -0.25px,
+        "weight": 400),
+    "display-medium": ("line-height": 52px,
+        "size": 45px,
+        "tracking": 0,
+        "weight": 400),
+    "headline-large": ("line-height": 40px,
+        "size": 32px,
+        "tracking": 0,
+        "weight": 400),
+    "headline-medium": ("line-height": 36px,
+        "size": 28px,
+        "tracking": 0,
+        "weight": 400),
+    "title-medium": ("line-height": 24px,
+        "size": 16px,
+        "tracking": 0.15px,
+        "weight": 500),
+    "body-large": ("line-height": 24px,
+        "size": 16px,
+        "tracking": 0.5px,
+        "weight": 400),
+    "body-medium": ("line-height": 20px,
+        "size": 14px,
+        "tracking": 0.25px,
+        "weight": 400),
+);
 
+@mixin _private-apply-font($font-style) {
+    $font-map: map.get($typography-map, $font-style);
+
+    font-size: map.get($font-map, "size");
+    font-weight: map.get($font-map, "weight");
+    letter-spacing: map.get($font-map, "tracking");
+    line-height: map.get($font-map, "line-height");
+}
+
+@mixin typography-display-large {
+    @include _private-apply-font("display-large");
+}
+
+@mixin typography-display-medium {
+    @include _private-apply-font("display-medium");
+}
+
+@mixin typography-headline-large {
+    @include _private-apply-font("headline-large");
+}
+
+@mixin typography-headline-medium {
+    @include _private-apply-font("headline-medium");
+}
+
+@mixin typography-title-medium {
+    @include _private-apply-font("title-medium");
+}
+
+@mixin typography-body-large {
+    @include _private-apply-font("body-large");
+}
+
+@mixin typography-body-medium {
+    @include _private-apply-font("body-medium");
+}
 
 $breakpoint-tablet:1400px;
 $breakpoint-phone:900px;
@@ -47,139 +113,79 @@ body {
     margin: 0;
     height: 100%;
 }
-
+h1, h2, h3, p {
+    margin: 0;
+}
 body {
+    font-family: 'roboto';
     display: grid;
-    place-items: center;
-    font-family: "Roboto", sans-serif;
-
-    background-color: var(--md-sys-color-background);
+    grid-auto-rows: min-content;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 16px;
+    padding-inline: 150px;
+    position: relative;
     color: var(--md-sys-color-on-background);
 }
-.material-symbols-outlined{
-    fill:0;
-}
-.container {
-    padding-block: 8px;
-    border-radius: 8px;
+section {
+    grid-column: 1/-1;
     display: grid;
- 
-    width:100%;
-    height: 100%;
-    background-color: var(--md-sys-color-surface-container);
-    grid-template-columns: [navigation-start] 300px [navigation-end]  1fr;
-    grid-template-rows: [navigation-start] 1fr [navigation-end];
-    @media(width < $breakpoint-tablet) and (width > $breakpoint-phone){
-        grid-template-columns: [navigation-start] 100px [navigation-end content-start] 1fr [content-end];
-        grid-template-rows: [navigation-start] 1fr [navigation-end];
-    }
-    @media(width <= $breakpoint-phone){
-        grid-template-columns:[navigation-start]1fr[navigation-end];
-        grid-template-rows: 1fr [navigation-start] min-content [navigation-end];
+    grid-template-columns: subgrid;
+    isolation: isolate;
+
     
+}
+.hero-section{
+    height: 100dvh;
+    &__content {
+        grid-column: span 6;
+        display: grid;
+        align-items: center;
+        padding-block: 100px;
+        &__heading {
+            display: grid;
+            row-gap: 16px;
+            h1 {
+                @include typography-display-large;
+            }
+
+            h2 {
+
+                @include typography-headline-large;
+            }
+        }
     }
-    .navigation{
-        grid-column: navigation;
-        grid-row:navigation;
-        background-color: var(--md-sys-color-navigation);
-        padding:10px;
-        border-top-right-radius: 20px;
-        border-bottom-right-radius: 20px;
+    &__cta{
+        padding: 24px;
+        border-radius: 16px;
+        background: #006399;
+        display: grid;
+        place-items: center;
+        @include typography-display-medium;
+    }
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: url(https://s3-alpha-sig.figma.com/img/5789/05ac/f6a90cb182a2ace4cb6fbef124c0b2ff?Expires=1733097600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=KFh4swPAoubYOSX3JDOwRQeMHCY-wnyItt9~aYL5P9orxPIm7D~sB2XrXxanGqmOQAmzzXToGl4nu1sEAW4myv-F0z3qYSrzNXj8yH7oycEOMBF46n~WA5KRkoIA91~2WS965jlHnqNtT4g1Rs-TJEDoKqhdTAsnVICUFpYgMZPxOwZ2xrpf2RMncjmW~KxYWfraj85P2OuaqFldwuZmo3JFoRUhx-Yk~2W7dclNCQ4CcPpqZ9aajPTpWOe~uDKiA2wkNTuXWPxcVWViavmuK-ZzFpM4zMZcv4e4g3Wnaf78SLbW6CCwb7-dZ4KEgO~SBXoCVn6lvBve~BgngUiwgw__);
+        background-size: cover;
+        background-position: right;
+        z-index: -1;
+    }
+    &__navigation{
+  
+        grid-column:span 12;
+        //grid-row:1;
         display:grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: repeat(9,min-content);
-        
-        @media(width <= $breakpoint-phone){
-            grid-template-columns: repeat(7,min-content);
-            grid-template-rows: 1fr;
-            border-top-right-radius: 20px;
-            border-bottom-right-radius: 0;
-            border-top-left-radius: 20px;
-            text-align: center;
-            padding:10px 30px 10px 30px;
-            gap:70px;
-            p{
-                display:none;
-            }
+        grid-template-columns: repeat(2,1fr);
+
+        &__menu{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100px;
         }
-       
-        .item{
-            display:grid;
-            grid-template-columns:repeat(2,min-content) 1fr;
-            grid-template-rows:min-content;
-            border-radius:10px;
-            padding:10px;
+        &__logo{
             align-items: center;
-            @media(width < $breakpoint-tablet) and (width > $breakpoint-phone){
-                grid-template-columns:1fr;
-                grid-template-rows:repeat(3,min-content);
-                text-align: center;
-                padding:0;
-                margin:2px;
-            }
-            @media(width <= $breakpoint-phone){
-                grid-template-columns:1fr;
-                grid-template-rows:repeat(3,min-content);
-                text-align: center;
-                padding:0;
-                
-            }
-            &:hover{
-                background-color:var(--md-sys-color-primary-container);
-                span{font-variation-settings: 'FILL' 1;}
-                @media(width < $breakpoint-tablet) {
-                    background-color:var(--md-sys-color-navigation);
-                }
-            }
-         
-            .material-symbols-outlined {
-                vertical-align: middle;
-                margin-right: 20px;
-                @media(width < $breakpoint-tablet) and (width > $breakpoint-phone){
-                    line-height:40px;
-                    width:100%;
-                    height:40px;
-                    margin-right:0;
-                    border-radius:20px;
-                    &:hover{
-                    background-color:var(--md-sys-color-primary-container);
-                    }
-                }
-                @media(width <= $breakpoint-phone){
-                    line-height:40px;
-                    width:100%;
-                    height:40px;
-                    margin-right:0;
-                    border-radius:20px;
-                    &:hover{
-                    background-color:var(--md-sys-color-primary-container);
-                    }
-                }
-            }   
-            .title{
-                text-align: center;
-            }
-            .quantity{
-                text-align: right;
-                @media(width < $breakpoint-tablet) {
-                    text-align: center;
-                }
-            }
         }
-        hr{
-            border: none;
-            border-top: 1px solid;
-            margin: 5px;
-            @media(width <= $breakpoint-phone){
-                border: none;
-                border-top: 0;
-                margin: 0;
-                border-left:1px solid;
-            }
-        }
-        
-    }
-    .content{
-        padding:20px;
     }
 }
